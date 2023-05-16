@@ -3,11 +3,19 @@ from tkinter import ttk
 import requests
 import json
 
-class CurrencyConverter(tk.Tk):
+class CurrencyExplorer(tk.Tk):
     
     def __init__(self):
+        super().__init__()
+
+        self.title("Currency Explorer")
+        self.geometry("400x600")
         #TODO: rita upp guit med tkinter
-        0
+        self.from_currency_combo = ttk.Combobox(self)
+        self.to_currency_combo = ttk.Combobox(self)
+        self.amount_entry = tk.Entry(self)
+        self.result_label = tk.Label(self)
+        self.convert_button = tk.Button(self, text="Convert", command=self.convert)
 
     def get_currencies(self):
         #TODO: hämta valutavärden från exchangerate.host
@@ -15,3 +23,5 @@ class CurrencyConverter(tk.Tk):
     def convert(self):
         #Konvertera mellan olika valutor.
         0
+
+CurrencyExplorer.mainloop()

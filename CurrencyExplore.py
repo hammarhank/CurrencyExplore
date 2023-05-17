@@ -35,17 +35,28 @@ class CurrencyExplorer(tk.Tk):
         response = requests.get("https://api.exchangerate.host/symbols")
         data = response.json()
         return list(data["symbols"].keys())
-        
+       
     def convert(self):
-        #FIXME: kraschar om amount_entry är tom
         from_currency = self.from_currency_combo.get()
         to_currency = self.to_currency_combo.get()
-        amount = float(self.amount_entry.get())
+        amount = self.amount_entry.get()
+
+       
+        if not from_currency or not to_currency or not amount:
+            self.result_label['text'] = 'Please select both currencies and enter an amount.'
+            return
+
+        try:
+            amount = float(amount)
+        except ValueError:
+            self.result_label['text'] = 'Please enter a valid amount.'
+            return
 
         response = requests.get(f'https://api.exchangerate.host/convert?from={from_currency}&to={to_currency}&amount={amount}')
         data = response.json()
 
         self.result_label['text'] = f'{amount} {from_currency} = {data["result"]} {to_currency}'
+
 
 app = CurrencyExplorer()
 app.mainloop()

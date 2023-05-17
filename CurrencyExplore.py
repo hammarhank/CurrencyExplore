@@ -47,10 +47,12 @@ class CurrencyExplorer(tk.Tk):
         return list(data["symbols"].keys())
        
     def convert(self):
-        from_currency = self.from_currency_combo.get()
-        to_currency = self.to_currency_combo.get()
+        from_currency = self.from_currency_combo.get().upper()
+        to_currency = self.to_currency_combo.get().upper()
         amount = self.amount_entry.get()
-    
+        self.from_currency_combo.set(from_currency.upper())
+        self.to_currency_combo.set(to_currency.upper())
+
         if not from_currency or not to_currency or not amount:
             messagebox.showerror("Error", "Please select both currencies and enter an amount.")
             return
@@ -74,8 +76,8 @@ class CurrencyExplorer(tk.Tk):
         from_currency = self.from_currency_combo.get()
         to_currency = self.to_currency_combo.get()
 
-        self.from_currency_combo.set(to_currency)
-        self.to_currency_combo.set(from_currency)
+        self.from_currency_combo.set(to_currency.upper())
+        self.to_currency_combo.set(from_currency.upper())
         
     def get_timeseries_data(self, from_currency, to_currency, start_date, end_date):
         url = f'https://api.exchangerate.host/timeseries?start_date={start_date}&end_date={end_date}&base={from_currency}&symbols={to_currency}'

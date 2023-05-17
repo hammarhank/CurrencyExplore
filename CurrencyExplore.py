@@ -6,6 +6,11 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 import requests
 import json
+import matplotlib.pyplot as plt
+import datetime
+import matplotlib.dates as mdates
+
+
 
 class CurrencyExplorer(tk.Tk):
     
@@ -36,9 +41,6 @@ class CurrencyExplorer(tk.Tk):
         self.convert_button.grid(row=3, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
         self.result_label.grid(row=4, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
 
-        
-
-
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")
         data = response.json()
@@ -48,9 +50,7 @@ class CurrencyExplorer(tk.Tk):
         from_currency = self.from_currency_combo.get()
         to_currency = self.to_currency_combo.get()
         amount = self.amount_entry.get()
-
-       #FIXME: om man anger vad som helst i comboboxarna så går det igenom. lösning kolla så att angiven valuta finns i symbols.
-       #BUG: om man går från en valuta som finns till en som inte finns så får man föregående valutas värde att räkna om. 
+    
         if not from_currency or not to_currency or not amount:
             messagebox.showerror("Error", "Please select both currencies and enter an amount.")
             return
@@ -66,6 +66,9 @@ class CurrencyExplorer(tk.Tk):
 
         self.result_label['text'] = f'{amount} {from_currency} = {data["result"]} {to_currency}'
 
+        timeseries_data = self.get_timeseries_data(from_currency, to_currency, '2023-05-01', '2023-05-17')
+        self.plot_timeseries(timeseries_data, to_currency)
+
     def switch_currencies(self):
 
         from_currency = self.from_currency_combo.get()
@@ -73,6 +76,34 @@ class CurrencyExplorer(tk.Tk):
 
         self.from_currency_combo.set(to_currency)
         self.to_currency_combo.set(from_currency)
+        
+    def get_timeseries_data(self, from_currency, to_currency, start_date, end_date):
+        url = f'https://api.exchangerate.host/timeseries?start_date={start_date}&end_date={end_date}&base={from_currency}&symbols={to_currency}'
+        response = requests.get(url)
+        data = response.json()
+        return data
+
+    def plot_timeseries(self, data, to_currency):
+        dates = []
+        rates = []
+
+        for date, rate in data['rates'].items():
+            dates.append(datetime.datetime.strptime(date, "%Y-%m-%d"))
+            rates.append(rate[to_currency])
+
+        fig, ax = plt.subplots()
+        ax.plot(dates, rates)
+        from_currency = self.from_currency_combo.get()
+        to_currency = self.to_currency_combo.get()
+
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+        fig.set_figwidth(11)
+        fig.canvas.manager.set_window_title(f"Exchange rate over time {to_currency} - {from_currency}")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Rate")
+        ax.set_title("Exchange rate over time")
+        
+        plt.show()
 
 app = CurrencyExplorer()
 app.mainloop()

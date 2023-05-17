@@ -66,7 +66,12 @@ class CurrencyExplorer(tk.Tk):
         self.result_label['text'] = f'{amount} {from_currency} = {data["result"]} {to_currency}'
 
     def switch_currencies(self):
-        0
+
+        from_currency = self.from_currency_combo.get()
+        to_currency = self.to_currency_combo.get()
+
+        self.from_currency_combo.set(to_currency)
+        self.to_currency_combo.set(from_currency)
 
 app = CurrencyExplorer()
 app.mainloop()

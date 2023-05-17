@@ -11,7 +11,8 @@ class CurrencyExplorer(tk.Tk):
     
     def __init__(self):
         super().__init__()
-
+       
+        self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
         self.geometry("230x220")
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")

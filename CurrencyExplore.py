@@ -9,6 +9,7 @@ import json
 import matplotlib.pyplot as plt
 import datetime
 import matplotlib.dates as mdates
+from ttkwidgets.autocomplete import AutocompleteCombobox
 
 
 
@@ -16,19 +17,19 @@ class CurrencyExplorer(tk.Tk):
     
     def __init__(self):
         super().__init__()
-       
+        currencies = self.get_currencies()
         self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
         self.geometry("230x220")
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")
-        self.from_currency_combo = ttk.Combobox(self, font= "Calibri 10 bold", width=5)
-        self.to_currency_combo = ttk.Combobox(self, font= "Calibri 10 bold", width=5)
+        self.from_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
+        self.to_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
         self.amount_entry = tk.Entry(self, font= "Calibri 10 bold")
         self.result_label = tk.Label(self, font= "Calibri 15 bold")
         self.switch_button = tk.Button(self, text="Switch", command=self.switch_currencies)
         self.convert_button = tk.Button(self, text="Convert", command=self.convert, width=15)
                                         
-        currencies = self.get_currencies()
+        
         self.from_currency_combo['values'] = currencies
         self.to_currency_combo['values'] = currencies
 

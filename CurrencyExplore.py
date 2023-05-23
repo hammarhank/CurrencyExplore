@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from cgitb import text
 import tkinter as tk
 from tkinter import font
 from turtle import width
@@ -58,10 +59,12 @@ class CurrencyExplorer(tk.Tk):
             self.start_date_label.grid()
             self.start_date_entry.grid()
             self.geometry("280x300")
+            self.convert_button.config(text="Convert and Plot")
         else:
             self.start_date_label.grid_remove()
             self.start_date_entry.grid_remove()
             self.geometry("280x230")
+            self.convert_button.config(text="Convert")
 
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")

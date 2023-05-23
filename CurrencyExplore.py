@@ -20,8 +20,9 @@ class CurrencyExplorer(tk.Tk):
         currencies = self.get_currencies()
         self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
-        self.geometry("280x300")
+        self.geometry("280x230")
         self.show_plot = tk.BooleanVar()
+        self.show_plot.trace_add("write", self.toggle_date_entry)
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")
         self.from_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
         self.to_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
@@ -49,6 +50,18 @@ class CurrencyExplorer(tk.Tk):
         self.start_date_label.grid(row=5, column=0, columnspan=3,padx=(10, 0), pady=(10, 0))
         self.start_date_entry.grid(row=6, column=0, columnspan=3,padx=(10, 0), pady=(10, 0))
         self.plot_checkbox.grid(row=7, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
+        self.start_date_label.grid_remove()
+        self.start_date_entry.grid_remove()
+    
+    def toggle_date_entry(self, *args):
+        if self.show_plot.get():
+            self.start_date_label.grid()
+            self.start_date_entry.grid()
+            self.geometry("280x300")
+        else:
+            self.start_date_label.grid_remove()
+            self.start_date_entry.grid_remove()
+            self.geometry("280x230")
 
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")

@@ -2,7 +2,6 @@
 from cgitb import text
 import tkinter as tk
 from tkinter import font
-from turtle import width
 import ttkbootstrap as ttk
 from tkinter import messagebox
 import requests
@@ -92,7 +91,7 @@ class CurrencyExplorer(tk.Tk):
         data = response.json()
 
         self.result_label['text'] = f'{amount} {from_currency} = {data["result"]} {to_currency}'
-
+        #BUG: om datumtextbox är tom så kommer det att visas en tom plot. 
         if self.show_plot.get():  
             start_date = self.start_date_entry.get()
             end_date = datetime.datetime.now().strftime('%Y-%m-%d')

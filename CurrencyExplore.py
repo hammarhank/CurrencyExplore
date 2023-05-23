@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import font
+from turtle import width
 import ttkbootstrap as ttk
 from tkinter import messagebox
 import requests
@@ -19,15 +20,17 @@ class CurrencyExplorer(tk.Tk):
         currencies = self.get_currencies()
         self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
-        self.geometry("230x300")
+        self.geometry("280x300")
         self.show_plot = tk.BooleanVar()
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")
         self.from_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
         self.to_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
-        self.amount_entry = tk.Entry(self, font= "Calibri 10 bold")
+        self.amount_label = tk.Label(self, text="Amount:", font= "Calibri 10 bold")
+        self.amount_entry = tk.Entry(self, font= "Calibri 10 bold",width=15)
         self.result_label = tk.Label(self, font= "Calibri 15 bold")
         self.switch_button = tk.Button(self, text="Switch", command=self.switch_currencies)
         self.convert_button = tk.Button(self, text="Convert", command=self.convert, width=15)
+        self.start_date_label = tk.Label(self, text="Start Date (YYYY-MM-DD):", font= "Calibri 10 bold")
         self.start_date_entry = tk.Entry(self, font= "Calibri 10 bold")
         self.plot_checkbox = tk.Checkbutton(self, text="Show Timeseries", variable=self.show_plot)                 
         
@@ -39,11 +42,13 @@ class CurrencyExplorer(tk.Tk):
         self.from_currency_combo.grid(row=1, column=0, padx=(10, 0), pady=(10, 0))
         self.switch_button.grid(row=1, column=1, padx=(10, 0), pady=(10, 0))
         self.to_currency_combo.grid(row=1, column=2, padx=(10, 0), pady=(10, 0))
-        self.amount_entry.grid(row=2, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
+        self.amount_label.grid(row=2, column=0, padx=(10, 0), pady=(10, 0), sticky="E")
+        self.amount_entry.grid(row=2, column=1, padx=(10, 0), pady=(10, 0)) 
         self.convert_button.grid(row=3, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
         self.result_label.grid(row=4, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
-        self.start_date_entry.grid(row=5, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
-        self.plot_checkbox.grid(row=6, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
+        self.start_date_label.grid(row=5, column=0, columnspan=3,padx=(10, 0), pady=(10, 0))
+        self.start_date_entry.grid(row=6, column=0, columnspan=3,padx=(10, 0), pady=(10, 0))
+        self.plot_checkbox.grid(row=7, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
 
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")

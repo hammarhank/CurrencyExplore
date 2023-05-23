@@ -20,6 +20,7 @@ class CurrencyExplorer(tk.Tk):
         self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
         self.geometry("230x220")
+        self.show_plot = tk.BooleanVar()
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")
         self.from_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
         self.to_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
@@ -27,7 +28,7 @@ class CurrencyExplorer(tk.Tk):
         self.result_label = tk.Label(self, font= "Calibri 15 bold")
         self.switch_button = tk.Button(self, text="Switch", command=self.switch_currencies)
         self.convert_button = tk.Button(self, text="Convert", command=self.convert, width=15)
-        self.plot_checkbox = tk.Checkbutton(self, text="Show Timeseries")                 
+        self.plot_checkbox = tk.Checkbutton(self, text="Show Timeseries", variable=self.show_plot)                 
         
         self.from_currency_combo['values'] = currencies
         self.to_currency_combo['values'] = currencies
@@ -69,8 +70,11 @@ class CurrencyExplorer(tk.Tk):
 
         self.result_label['text'] = f'{amount} {from_currency} = {data["result"]} {to_currency}'
 
-        timeseries_data = self.get_timeseries_data(from_currency, to_currency, '2023-05-01', '2023-05-17')
-        self.plot_timeseries(timeseries_data, to_currency)
+        #timeseries_data = self.get_timeseries_data(from_currency, to_currency, '2023-05-01', '2023-05-17')
+        #self.plot_timeseries(timeseries_data, to_currency)
+        if self.show_plot.get():  
+            timeseries_data = self.get_timeseries_data(from_currency, to_currency, '2023-05-01', '2023-05-17')
+            self.plot_timeseries(timeseries_data, to_currency)
 
     def switch_currencies(self):
 

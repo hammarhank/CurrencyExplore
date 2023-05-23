@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import font
-from turtle import width
 import ttkbootstrap as ttk
 from tkinter import messagebox
 import requests
@@ -28,7 +27,7 @@ class CurrencyExplorer(tk.Tk):
         self.result_label = tk.Label(self, font= "Calibri 15 bold")
         self.switch_button = tk.Button(self, text="Switch", command=self.switch_currencies)
         self.convert_button = tk.Button(self, text="Convert", command=self.convert, width=15)
-                                        
+        self.plot_checkbox = tk.Checkbutton(self, text="Show Timeseries")                 
         
         self.from_currency_combo['values'] = currencies
         self.to_currency_combo['values'] = currencies
@@ -41,6 +40,7 @@ class CurrencyExplorer(tk.Tk):
         self.amount_entry.grid(row=2, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
         self.convert_button.grid(row=3, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
         self.result_label.grid(row=4, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
+        self.plot_checkbox.grid(row=5, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
 
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")

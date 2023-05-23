@@ -19,7 +19,7 @@ class CurrencyExplorer(tk.Tk):
         currencies = self.get_currencies()
         self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
-        self.geometry("230x220")
+        self.geometry("230x300")
         self.show_plot = tk.BooleanVar()
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")
         self.from_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
@@ -28,6 +28,7 @@ class CurrencyExplorer(tk.Tk):
         self.result_label = tk.Label(self, font= "Calibri 15 bold")
         self.switch_button = tk.Button(self, text="Switch", command=self.switch_currencies)
         self.convert_button = tk.Button(self, text="Convert", command=self.convert, width=15)
+        self.start_date_entry = tk.Entry(self, font= "Calibri 10 bold")
         self.plot_checkbox = tk.Checkbutton(self, text="Show Timeseries", variable=self.show_plot)                 
         
         self.from_currency_combo['values'] = currencies
@@ -40,8 +41,9 @@ class CurrencyExplorer(tk.Tk):
         self.to_currency_combo.grid(row=1, column=2, padx=(10, 0), pady=(10, 0))
         self.amount_entry.grid(row=2, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
         self.convert_button.grid(row=3, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
-        self.result_label.grid(row=4, column=0, columnspan=3, padx=(10, 0), pady=(10, 0)) 
-        self.plot_checkbox.grid(row=5, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
+        self.result_label.grid(row=4, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
+        self.start_date_entry.grid(row=5, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
+        self.plot_checkbox.grid(row=6, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
 
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")
@@ -70,10 +72,10 @@ class CurrencyExplorer(tk.Tk):
 
         self.result_label['text'] = f'{amount} {from_currency} = {data["result"]} {to_currency}'
 
-        #timeseries_data = self.get_timeseries_data(from_currency, to_currency, '2023-05-01', '2023-05-17')
-        #self.plot_timeseries(timeseries_data, to_currency)
         if self.show_plot.get():  
-            timeseries_data = self.get_timeseries_data(from_currency, to_currency, '2023-05-01', '2023-05-17')
+            start_date = self.start_date_entry.get()
+            end_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            timeseries_data = self.get_timeseries_data(from_currency, to_currency, start_date, end_date)
             self.plot_timeseries(timeseries_data, to_currency)
 
     def switch_currencies(self):

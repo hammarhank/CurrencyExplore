@@ -26,6 +26,7 @@ class CurrencyExplorer(tk.Tk):
         self.show_plot = tk.BooleanVar()
         self.show_plot.trace_add("write", self.toggle_date_entry)
         self.title_label = ttk.Label(self, text="Currency Explorer", font= "Calibri 12 bold")
+        #Källa:https://pythonguides.com/python-tkinter-autocomplete/
         self.from_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
         self.to_currency_combo = AutocompleteCombobox(self, font= "Calibri 10 bold", width=5, completevalues=currencies)
         self.amount_label = tk.Label(self, text="Amount:", font= "Calibri 10 bold")

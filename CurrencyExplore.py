@@ -131,7 +131,8 @@ class CurrencyExplorer(tk.Tk):
         ax.set_xlabel("Date")
         ax.set_ylabel("Rate")
         ax.set_title("Exchange rate over time")
-        
+        manager = plt.get_current_fig_manager()
+        manager.window.wm_geometry("+400+260")
         plt.show()
 
 app = CurrencyExplorer()

@@ -17,6 +17,8 @@ class CurrencyExplorer(tk.Tk):
     
     def __init__(self):
         super().__init__()
+        #Källa: https://youtu.be/mop6g-c5HEY
+        #       https://github.com/clear-code-projects/tkinter-complete
         currencies = self.get_currencies()
         self.style = ttk.Style(theme="journal")
         self.title("Currency Explorer")
@@ -50,6 +52,8 @@ class CurrencyExplorer(tk.Tk):
         self.start_date_label.grid(row=5, column=0, columnspan=3,padx=(10, 0), pady=(10, 0))
         self.start_date_entry.grid(row=6, column=0, columnspan=3,padx=(10, 0), pady=(10, 0))
         self.plot_checkbox.grid(row=7, column=0, columnspan=3, padx=(10, 0), pady=(10, 0))
+        #Källa: Gömma och visa widgets
+        #       https://pythonprogramming.altervista.org/tkinter-how-to-hide-and-show-frames/?doing_wp_cron=1684918771.0148398876190185546875
         self.start_date_label.grid_remove()
         self.start_date_entry.grid_remove()
     
@@ -64,12 +68,12 @@ class CurrencyExplorer(tk.Tk):
             self.start_date_entry.grid_remove()
             self.geometry("280x230")
             self.convert_button.config(text="Convert")
-
+    #Källa: https://exchangerate.host/#/#articles
     def get_currencies(self):        
         response = requests.get("https://api.exchangerate.host/symbols")
         data = response.json()
         return list(data["symbols"].keys())
-       
+        #Källa: https://exchangerate.host/#/#articles   
     def convert(self):
         from_currency = self.from_currency_combo.get().upper()
         to_currency = self.to_currency_combo.get().upper()
@@ -77,6 +81,7 @@ class CurrencyExplorer(tk.Tk):
         self.from_currency_combo.set(from_currency.upper())
         self.to_currency_combo.set(to_currency.upper())
 
+        #Källa: https://docs.python.org/3/library/tkinter.messagebox.html
         if not from_currency or not to_currency or not amount:
             messagebox.showerror("Error", "Please select both currencies and enter an amount.")
             return
@@ -111,7 +116,7 @@ class CurrencyExplorer(tk.Tk):
         response = requests.get(url)
         data = response.json()
         return data
-
+    #Källa: https://www.geeksforgeeks.org/graph-plotting-in-python-set-1/
     def plot_timeseries(self, data, to_currency):
         dates = []
         rates = []
